@@ -7,7 +7,9 @@ from PIL import Image
 import numpy as np
 import torchvision.transforms as transforms
 import segmentation_models_pytorch as smp
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, VideoProcessorBase
+import av
+
 
 
 # Load the pre-trained models
@@ -77,24 +79,46 @@ if uploaded_file is not None:
 else:
     st.write("Or use the camera:")
 
-class CaptureEverySecond(VideoTransformerBase):
+# class CaptureEverySecond(VideoTransformerBase):
+#     def __init__(self):
+#         self.last_capture = time.time()
+#
+#     def transform(self, frame):
+#         print("transform")
+#         current_time = time.time()
+#         if current_time - self.last_capture >= 1:
+#             self.last_capture = current_time
+#             # img = cv2.cvtColor(frame.to_ndarray(format="bgr24"), cv2.COLOR_BGR2RGB)
+#             # image = Image.fromarray(img)
+#             # cols = st.columns(2)
+#             # cols[0].image(frame, caption="Captured Image", use_column_width=True)
+#             # video_transformer = VideoTransformer(model)
+#             # output_image = video_transformer.transform(image)
+#             # cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
+#         return frame
+
+# def video_frame_callback(frame):
+#     print("video_frame_callback")
+#     img = frame.to_ndarray(format="bgr24")
+#
+#     flipped = img[::-1,:,:]
+#
+#     return av.VideoFrame.from_ndarray(flipped, format="bgr24")
+# webrtc_ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
+class VideoProcessor(VideoProcessorBase):
     def __init__(self):
-        self.last_capture = time.time()
+        self.style = 'color'
 
-    def transform(self, frame):
-        current_time = time.time()
-        if current_time - self.last_capture >= 1:
-            self.last_capture = current_time
-            img = cv2.cvtColor(frame.to_ndarray(format="bgr24"), cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(img)
-            cols = st.beta_columns(2)
-            cols[0].image(image, caption="Captured Image", use_column_width=True)
-            video_transformer = VideoTransformer(model)
-            output_image = video_transformer.transform(image)
-            cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
-        return frame
 
-webrtc_ctx = webrtc_streamer(key="example", video_transformer_factory=CaptureEverySecond)
+    def recv(self, frame):
+        img = frame.to_ndarray(format="bgr24")
 
-if webrtc_ctx.video_transformer:
-    webrtc_ctx.video_transformer.model = model
+        # image processing code here
+
+        return av.VideoFrame.from_ndarray(img, format="bgr24")
+
+
+webrtc_ctx=webrtc_streamer(key="vpf", video_processor_factory=VideoProcessor)
+#
+# if webrtc_ctx.video_transformer:
+#     webrtc_ctx.video_transformer.model = model
