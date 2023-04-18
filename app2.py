@@ -9,7 +9,35 @@ import torchvision.transforms as transforms
 import segmentation_models_pytorch as smp
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, VideoProcessorBase
 import av
+import requests
+import smtplib
+from email.message import EmailMessage
 
+
+# def send_email(subject, body, to):
+#     msg = EmailMessage()
+#     msg.set_content(body)
+#     msg["Subject"] = subject
+#     msg["From"] = "your-email@example.com"
+#     msg["To"] = to
+#
+#     server = smtplib.SMTP_SSL("smtp.example.com", 465)
+#     server.login("your-email@example.com", "your-email-password")
+#     server.send_message(msg)
+#     server.quit()
+
+
+# Function to send email using API
+def send_email_api(name, to_email, subject, body):
+    url = "https://apiv1.sszzz.me/api/email/send"
+    payload = {
+        "name": name,
+        "email": to_email,
+        "subject": subject,
+        "body": body
+    }
+    response = requests.post(url, json=payload)
+    return response.status_code
 
 
 # Load the pre-trained models
@@ -59,25 +87,51 @@ st.set_page_config(page_title="Image Segmentation", layout="wide")
 st.title("Image Segmentation")
 st.write("Upload an image or use the camera to capture a photo and select a pre-trained model for segmentation.")
 
+sidebar = st.sidebar
+sidebar.title("Settings")
+sidebar.write("Select a pre-trained model:")
 model_names = ["resnet34", "resnet101", "vgg16", "vgg19", "efficientnet-b0", "efficientnet-b7"]
 model_nets = ["DeepLabV3", "UNET", "UNETplus"]
-
-sidebar = st.sidebar
-sidebar.write("Select a pre-trained model:")
 model_name = sidebar.selectbox("", [f"{net}_{encoder}" for net in model_nets for encoder in model_names])
 model = load_trained_models(model_name)
+
+threshold_percentage = sidebar.slider("Alert Threshold Percentage", min_value=0, max_value=100, value=50, step=1)
+sidebar.write("Email Subscription:")
+email = sidebar.text_input("Enter your email", "")
+# subscribe = sidebar.button("Subscribe")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
+
     cols = st.columns(2)
-    cols[0].image(image, caption="Uploaded Image", use_column_width=True)
+    resized_image = image.resize((256, 256))
+    cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
     video_transformer = VideoTransformer(model)
     output_image = video_transformer.transform(image)
     cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
-else:
-    st.write("Or use the camera:")
+# Check if the segmented area is greater than the threshold percentage
+    area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
+
+    if area_percentage > threshold_percentage:
+        st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
+        print(email)
+        if email:
+            # Send an email alert
+            print("Sending email...")
+            subject = "Image Segmentation Alert"
+            body = f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold of {threshold_percentage}%."
+            try:
+                send_email_api("Leaf Image Segmentation",subject, body, email)
+                st.success("Alert email sent successfully.")
+            except Exception as e:
+                st.error(f"Error sending email: {e}")
+    else:
+        st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
+
+# else:
+#     st.write("Or use the camera:")
 
 # class CaptureEverySecond(VideoTransformerBase):
 #     def __init__(self):
@@ -105,20 +159,20 @@ else:
 #
 #     return av.VideoFrame.from_ndarray(flipped, format="bgr24")
 # webrtc_ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
-class VideoProcessor(VideoProcessorBase):
-    def __init__(self):
-        self.style = 'color'
-
-
-    def recv(self, frame):
-        img = frame.to_ndarray(format="bgr24")
-
-        # image processing code here
-
-        return av.VideoFrame.from_ndarray(img, format="bgr24")
-
-
-webrtc_ctx=webrtc_streamer(key="vpf", video_processor_factory=VideoProcessor)
+# class VideoProcessor(VideoProcessorBase):
+#     def __init__(self):
+#         self.style = 'color'
+#
+#
+#     def recv(self, frame):
+#         img = frame.to_ndarray(format="bgr24")
+#
+#         # image processing code here
+#
+#         return av.VideoFrame.from_ndarray(img, format="bgr24")
+#
+#
+# webrtc_ctx=webrtc_streamer(key="vpf", video_processor_factory=VideoProcessor)
 #
 # if webrtc_ctx.video_transformer:
 #     webrtc_ctx.video_transformer.model = model
