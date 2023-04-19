@@ -7,7 +7,6 @@ from PIL import Image
 import numpy as np
 import torchvision.transforms as transforms
 import segmentation_models_pytorch as smp
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, VideoProcessorBase
 import av
 import requests
 import smtplib
@@ -91,7 +90,7 @@ def display_sent_email(uploaded_file):
             st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
 
 
-class VideoTransformer(VideoTransformerBase):
+class VideoTransformer:
     def __init__(self, model):
         self.model = model
         self.data_transform = transforms.Compose([
