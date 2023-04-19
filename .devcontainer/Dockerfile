@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/python:3
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 #FROM rust:latest
 
