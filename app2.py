@@ -12,6 +12,8 @@ import av
 import requests
 import smtplib
 from email.message import EmailMessage
+import streamlit as st
+from camera_input_live import camera_input_live
 
 
 # def send_email(subject, body, to):
@@ -130,49 +132,35 @@ if uploaded_file is not None:
     else:
         st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
 
-# else:
-#     st.write("Or use the camera:")
+else:
+    st.write("Or use the camera:")
+    image=camera_input_live()
+    #
+    if image is not None:
+        # st.image(picture)
+        image = Image.open(image).convert("RGB")
 
-# class CaptureEverySecond(VideoTransformerBase):
-#     def __init__(self):
-#         self.last_capture = time.time()
-#
-#     def transform(self, frame):
-#         print("transform")
-#         current_time = time.time()
-#         if current_time - self.last_capture >= 1:
-#             self.last_capture = current_time
-#             # img = cv2.cvtColor(frame.to_ndarray(format="bgr24"), cv2.COLOR_BGR2RGB)
-#             # image = Image.fromarray(img)
-#             # cols = st.columns(2)
-#             # cols[0].image(frame, caption="Captured Image", use_column_width=True)
-#             # video_transformer = VideoTransformer(model)
-#             # output_image = video_transformer.transform(image)
-#             # cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
-#         return frame
+        cols = st.columns(2)
+        resized_image = image.resize((256, 256))
+        cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
+        video_transformer = VideoTransformer(model)
+        output_image = video_transformer.transform(image)
+        cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
+        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
 
-# def video_frame_callback(frame):
-#     print("video_frame_callback")
-#     img = frame.to_ndarray(format="bgr24")
-#
-#     flipped = img[::-1,:,:]
-#
-#     return av.VideoFrame.from_ndarray(flipped, format="bgr24")
-# webrtc_ctx = webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
-# class VideoProcessor(VideoProcessorBase):
-#     def __init__(self):
-#         self.style = 'color'
-#
-#
-#     def recv(self, frame):
-#         img = frame.to_ndarray(format="bgr24")
-#
-#         # image processing code here
-#
-#         return av.VideoFrame.from_ndarray(img, format="bgr24")
-#
-#
-# webrtc_ctx=webrtc_streamer(key="vpf", video_processor_factory=VideoProcessor)
-#
-# if webrtc_ctx.video_transformer:
-#     webrtc_ctx.video_transformer.model = model
+        if area_percentage > threshold_percentage:
+            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
+            print(email)
+            if email:
+                # Send an email alert
+                print("Sending email...")
+                subject = "Image Segmentation Alert"
+                body = f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold of {threshold_percentage}%."
+                try:
+                    send_email_api("Leaf Image Segmentation", subject, body, email)
+                    st.success("Alert email sent successfully.")
+                except Exception as e:
+                    st.error(f"Error sending email: {e}")
+        else:
+            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
+
