@@ -61,6 +61,36 @@ def load_trained_models(model_name):
     return model
 
 
+def display_sent_email(uploaded_file):
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file).convert("RGB")
+
+        cols = st.columns(2)
+        resized_image = image.resize((256, 256))
+        cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
+        video_transformer = VideoTransformer(model)
+        output_image = video_transformer.transform(image)
+        cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
+        # Check if the segmented area is greater than the threshold percentage
+        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
+
+        if area_percentage > threshold_percentage:
+            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
+            print(email)
+            if email:
+                # Send an email alert
+                print("Sending email...")
+                subject = "Image Segmentation Alert"
+                body = f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold of {threshold_percentage}%."
+                try:
+                    send_email_api("Leaf Image Segmentation", subject, body, email)
+                    st.success("Alert email sent successfully.")
+                except Exception as e:
+                    st.error(f"Error sending email: {e}")
+        else:
+            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
+
+
 class VideoTransformer(VideoTransformerBase):
     def __init__(self, model):
         self.model = model
@@ -84,6 +114,7 @@ class VideoTransformer(VideoTransformerBase):
         segmented_frame = cv2.cvtColor(np.uint8(output_image), cv2.COLOR_GRAY2BGR)
         return segmented_frame
 
+
 # App
 st.set_page_config(page_title="Image Segmentation", layout="wide")
 st.title("Image Segmentation")
@@ -104,63 +135,10 @@ email = sidebar.text_input("Enter your email", "")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
+
 if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("RGB")
-
-    cols = st.columns(2)
-    resized_image = image.resize((256, 256))
-    cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
-    video_transformer = VideoTransformer(model)
-    output_image = video_transformer.transform(image)
-    cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
-# Check if the segmented area is greater than the threshold percentage
-    area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
-
-    if area_percentage > threshold_percentage:
-        st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
-        print(email)
-        if email:
-            # Send an email alert
-            print("Sending email...")
-            subject = "Image Segmentation Alert"
-            body = f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold of {threshold_percentage}%."
-            try:
-                send_email_api("Leaf Image Segmentation",subject, body, email)
-                st.success("Alert email sent successfully.")
-            except Exception as e:
-                st.error(f"Error sending email: {e}")
-    else:
-        st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
-
+    display_sent_email(uploaded_file)
 else:
     st.write("Or use the camera:")
-    image=camera_input_live()
-    #
-    if image is not None:
-        # st.image(picture)
-        image = Image.open(image).convert("RGB")
-
-        cols = st.columns(2)
-        resized_image = image.resize((256, 256))
-        cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
-        video_transformer = VideoTransformer(model)
-        output_image = video_transformer.transform(image)
-        cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
-        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
-
-        if area_percentage > threshold_percentage:
-            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
-            print(email)
-            if email:
-                # Send an email alert
-                print("Sending email...")
-                subject = "Image Segmentation Alert"
-                body = f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold of {threshold_percentage}%."
-                try:
-                    send_email_api("Leaf Image Segmentation", subject, body, email)
-                    st.success("Alert email sent successfully.")
-                except Exception as e:
-                    st.error(f"Error sending email: {e}")
-        else:
-            st.write(f"The predicted area percentage is {area_percentage:.2f}% which is below the threshold.")
-
+    image = camera_input_live()
+    display_sent_email(image)
