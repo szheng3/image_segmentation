@@ -58,8 +58,8 @@ data_transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-train_dataset = SegmentationDataset("leaf_disease_segmentation/train_images", "leaf_disease_segmentation/train_masks", transform=data_transform)
-val_dataset = SegmentationDataset("leaf_disease_segmentation/valid_images", "leaf_disease_segmentation/valid_masks", transform=data_transform)
+train_dataset = SegmentationDataset("../leaf_disease_segmentation/train_images", "leaf_disease_segmentation/train_masks", transform=data_transform)
+val_dataset = SegmentationDataset("../leaf_disease_segmentation/valid_images", "leaf_disease_segmentation/valid_masks", transform=data_transform)
 
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
