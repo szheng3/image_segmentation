@@ -18,6 +18,7 @@ RUN apt-get install -y \
     curl \
     pkg-config \
     libssl-dev
+RUN apt-get install -y wget unzip
 
 RUN apt install python3.8
 RUN pip3 install torch torchvision torchaudio
@@ -43,6 +44,9 @@ WORKDIR /app
 #RUN curl -LJO https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcpu.zip && unzip libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcpu.zip
 # Copy the application code
 COPY . .
+RUN wget https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip && \
+    unzip trained_models.zip && \
+    rm trained_models.zip
 RUN pip3 install -r requirements.txt
 
 #ENV LIBTORCH='/app/libtorch'
