@@ -71,7 +71,7 @@ def display_sent_email(uploaded_file):
         output_image = video_transformer.transform(image)
         cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
         # Check if the segmented area is greater than the threshold percentage
-        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1])) * 100
+        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1]*output_image.shape[2])) * 100
 
         if area_percentage > threshold_percentage:
             st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
