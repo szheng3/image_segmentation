@@ -113,10 +113,9 @@ class VideoTransformer:
         segmented_frame = cv2.cvtColor(np.uint8(output_image), cv2.COLOR_GRAY2BGR)
         return segmented_frame
 
-
 # App
-st.set_page_config(page_title="Image Segmentation", layout="wide")
-st.title("Image Segmentation")
+st.set_page_config(page_title="Leaf Image Segmentation", layout="wide")
+st.title("Leaf Image Segmentation")
 st.write("Upload an image or use the camera to capture a photo and select a pre-trained model for segmentation.")
 
 sidebar = st.sidebar
@@ -130,14 +129,14 @@ model = load_trained_models(model_name)
 threshold_percentage = sidebar.slider("Alert Threshold Percentage", min_value=0, max_value=100, value=50, step=1)
 sidebar.write("Email Subscription:")
 email = sidebar.text_input("Enter your email", "")
-# subscribe = sidebar.button("Subscribe")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+nav = sidebar.radio("Navigation", ["Upload Image", "Use Camera"])
 
-
-if uploaded_file is not None:
-    display_sent_email(uploaded_file)
+if nav == "Upload Image":
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        display_sent_email(uploaded_file)
 else:
-    st.write("Or use the camera:")
+    st.write("Use the camera:")
     image = camera_input_live()
     display_sent_email(image)
