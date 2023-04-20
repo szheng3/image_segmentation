@@ -44,6 +44,7 @@ def send_email_api(name, to_email, subject, body):
 # Load the pre-trained models
 def load_trained_models(model_name):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(device)
     model_architecture, encoder_name = model_name.split('_')
 
     if model_architecture == "UNET":

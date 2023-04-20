@@ -2,14 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-service
-  namespace: davrat-prod
+  namespace: resume-prod
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "davrat-static-ip"
     networking.gke.io/managed-certificates: "managed-cert-prod"
 
 spec:
   rules:
-    - host: api.davrat.com
+    - host: apiv2.sszzz.me
       http:
         paths:
           - pathType: Prefix
