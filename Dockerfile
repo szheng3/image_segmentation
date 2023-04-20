@@ -46,7 +46,7 @@ WORKDIR /app
 # Copy the application code
 COPY . .
 RUN wget https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip && \
-    unzip trained_models.zip && \
+    unzip -o trained_models.zip && \
     rm trained_models.zip
 RUN pip3 install -r requirements.txt
 RUN tree --dirsfirst --charset=ascii .
