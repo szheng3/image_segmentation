@@ -55,7 +55,7 @@ RUN tree --dirsfirst --charset=ascii .
 #ENV LD_LIBRARY_PATH='${LIBTORCH}/lib:$LD_LIBRARY_PATH'#COPY  /app/dist/ ./dist/
 
 # Expose the application port
-EXPOSE 8502
+EXPOSE 8501
 
 # Set the command to run when the container starts
 #CMD ["./target/release/rust-new-project-template"]

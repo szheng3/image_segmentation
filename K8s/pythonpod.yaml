@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: Always
           image: szheng3/sz-leaf-ml:latest
           ports:
-            - containerPort: 8502
+            - containerPort: 8501
 
 #          env:
 #            - name: SPRING_ZIPKIN_BASEURL
@@ -28,13 +28,13 @@ spec:
 #          readinessProbe:
 #            httpGet:
 #              path: /actuator/health/readiness
-#              port: 8502
+#              port: 8501
 #            initialDelaySeconds: 60
 #            timeoutSeconds: 5
 #          livenessProbe:
 #            httpGet:
 #              path: /actuator/health/liveness
-#              port: 8502
+#              port: 8501
 #            initialDelaySeconds: 130
 #            timeoutSeconds: 10
 #            failureThreshold: 10
@@ -93,5 +93,5 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 8502
+      targetPort: 8501
   type: ClusterIP
