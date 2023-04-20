@@ -20,7 +20,8 @@ RUN apt-get install -y \
     libssl-dev
 RUN apt-get install -y wget unzip
 RUN apt-get install tree
-RUN apt-get install python3.8
+RUN apt-get install -y python3.8 python3.8-dev python3-pip
+
 RUN pip3 install torch torchvision torchaudio
 # Get Rust
 #RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
