@@ -19,8 +19,8 @@ RUN apt-get install -y \
     pkg-config \
     libssl-dev
 RUN apt-get install -y wget unzip
-
-RUN apt install python3.8
+RUN apt-get install tree
+RUN apt-get install python3.8
 RUN pip3 install torch torchvision torchaudio
 # Get Rust
 #RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -48,6 +48,7 @@ RUN wget https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip && \
     unzip trained_models.zip && \
     rm trained_models.zip
 RUN pip3 install -r requirements.txt
+RUN tree --dirsfirst --charset=ascii .
 
 #ENV LIBTORCH='/app/libtorch'
 #ENV LD_LIBRARY_PATH='${LIBTORCH}/lib:$LD_LIBRARY_PATH'#COPY  /app/dist/ ./dist/
