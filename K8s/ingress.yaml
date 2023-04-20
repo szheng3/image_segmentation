@@ -17,6 +17,17 @@ spec:
             # UPDATE THIS LINE ABOVE
             backend:
               service:
+                name: rust-ml
+                port:
+                  number: 80
+    - host: api.cloud.sszzz.me
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            # UPDATE THIS LINE ABOVE
+            backend:
+              service:
                 name: leaf-ml
                 port:
                   number: 80

@@ -11,6 +11,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 RUN apt-get update
 RUN apt-get install -y -q
+#sudo yum install libXext libSM libXrender
+RUN apt-get install -y libsm6 libxext6 libxrender-dev
 RUN apt-get install libsm6 libxrender1 libfontconfig1 -y
 RUN apt-get install dialog apt-utils -y
 RUN apt-get install -y \
