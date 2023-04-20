@@ -40,10 +40,10 @@ def send_email_api(name, to_email, subject, body):
     response = requests.post(url, json=payload)
     return response.status_code
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the pre-trained models
 def load_trained_models(model_name):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(device)
     model_architecture, encoder_name = model_name.split('_')
 
@@ -100,7 +100,7 @@ class VideoTransformer:
         ])
 
     def transform(self, image):
-        input_image = self.data_transform(image).unsqueeze(0)
+        input_image = self.data_transform(image).unsqueeze(0).to(device)
 
         # Perform segmentation
         with torch.no_grad():
