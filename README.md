@@ -87,15 +87,11 @@ kubectl apply -f .
 
 * This repo main branch is automatically published to Dockerhub with [CI/CD](https://github.com/szheng3/leaf_image_segmentation/actions/runs/4781787422/jobs/8500549277), you can pull the image from [here](https://hub.docker.com/repository/docker/szheng3/sz-leaf-ml/general)
 ```
-docker pull szheng3/sz-rust-ml:latest
-```
-* Run the docker image.
-```
-docker run -d -p 8000:8000 szheng3/sz-rust-ml:latest
+docker pull szheng3/sz-leaf-ml:latest
 ```
 * Run the docker image with GPU.
 ```
-docker run -d -p 8000:8000 szheng3/sz-rust-ml:latest-gpu
+docker run -d -p 8501:8501 szheng3/sz-leaf-ml:latest
 ```
 
 
