@@ -40,7 +40,9 @@ def send_email_api(name, to_email, subject, body):
     response = requests.post(url, json=payload)
     return response.status_code
 
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 # Load the pre-trained models
 def load_trained_models(model_name):
@@ -72,7 +74,8 @@ def display_sent_email(uploaded_file):
         output_image = video_transformer.transform(image)
         cols[1].image(output_image, caption="Segmented Image", use_column_width=True)
         # Check if the segmented area is greater than the threshold percentage
-        area_percentage = (np.count_nonzero(output_image) / (output_image.shape[0] * output_image.shape[1]*output_image.shape[2])) * 100
+        area_percentage = (np.count_nonzero(output_image) / (
+                output_image.shape[0] * output_image.shape[1] * output_image.shape[2])) * 100
 
         if area_percentage > threshold_percentage:
             st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
@@ -114,6 +117,7 @@ class VideoTransformer:
         segmented_frame = cv2.cvtColor(np.uint8(output_image), cv2.COLOR_GRAY2BGR)
         return segmented_frame
 
+
 # App
 st.set_page_config(page_title="Leaf Image Segmentation", layout="wide")
 st.title("Leaf Image Segmentation")
@@ -122,9 +126,13 @@ st.write("Upload an image or use the camera to capture a photo and select a pre-
 sidebar = st.sidebar
 sidebar.title("Settings")
 sidebar.write("Select a pre-trained model:")
-model_names = ["resnet34", "resnet101", "vgg16", "vgg19", "efficientnet-b0", "efficientnet-b7"]
-model_nets = ["DeepLabV3", "UNET", "UNETplus"]
-model_name = sidebar.selectbox("", [f"{net}_{encoder}" for net in model_nets for encoder in model_names])
+model_names = ["efficientnet-b7", "efficientnet-b0", "resnet34", "resnet101", "vgg16", "vgg19"]
+model_nets = ["UNETplus", "DeepLabV3", "UNET"]
+# Remove DeepLabV3_vgg16 and DeepLabV3_vgg19 from the available options
+allowed_combinations = [f"{net}_{encoder}" for net in model_nets for encoder in model_names
+                        if not (net == "DeepLabV3" and encoder in ["vgg16", "vgg19"])]
+
+model_name = sidebar.selectbox("", allowed_combinations)
 model = load_trained_models(model_name)
 
 threshold_percentage = sidebar.slider("Alert Threshold Percentage", min_value=0, max_value=100, value=50, step=1)

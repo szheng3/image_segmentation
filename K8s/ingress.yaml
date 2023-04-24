@@ -20,6 +20,17 @@ spec:
                 name: rust-ml
                 port:
                   number: 80
+    - host: apiv1.sszzz.me
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            # UPDATE THIS LINE ABOVE
+            backend:
+              service:
+                name: web-resume-backend
+                port:
+                  number: 80
     - host: api.cloud.sszzz.me
       http:
         paths:
