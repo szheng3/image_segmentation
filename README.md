@@ -1,3 +1,7 @@
+
+[![publish to Dockerhub](https://github.com/szheng3/leaf_image_segmentation/actions/workflows/publish.yml/badge.svg)](https://github.com/szheng3/leaf_image_segmentation/actions/workflows/publish.yml)
+
+
 # Leaf Image Segmentation
 
 > #### Shuai | Spring '23 | Duke AIPI 540
@@ -8,6 +12,9 @@ This project aims to enable leaf image segmentation, which would allow farmers o
 areas using a camera. By automatically alerting the farmer or bio scientist via email, this technology could
 significantly improve the efficiency of plant monitoring. The project involves the comparison of various models, with
 the aim of identifying the best model for achieving accurate leaf image segmentation.
+
+## Project Demo with GPU enable
+* [https://api.cloud.sszzz.me/](https://api.cloud.sszzz.me/)
 
 ![image](https://user-images.githubusercontent.com/16725501/233883932-4715b03d-fde3-451e-b4ad-6327f930db02.png)
 
@@ -27,7 +34,9 @@ link: https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip
 ## Project Structure
 
 ```
-|-- K8s
+|-- .devcontainer               ----codespace configuration 
+|-- .github                     ----github CI/CD actions      
+|-- K8s                         ----kubernetes deployment files
 |   |-- ingress.yaml
 |   `-- pythonpod.yaml
 |-- data                        ----store automatically fetched data
@@ -54,6 +63,46 @@ link: https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip
 |-- main.py                   ----main function
 `-- requirements.txt
 ```
+## Kubernetes Deployment
+* go to the directory `K8s`
+```
+cd K8s
+```
+
+* create the namespace `resume-prod`
+```
+kubectl create namespace resume-prod
+
+```
+* apply the yaml files
+```
+kubectl apply -f .
+```
+
+* Google Kubernetes Engine (GKE) in GPU mode is used in this project for deployment. The following is the screenshot of the deployment.
+
+![image](https://user-images.githubusercontent.com/16725501/233886025-38abb94c-cbc5-4696-be34-396955bb14b0.png)
+
+## Docker
+
+* This repo main branch is automatically published to Dockerhub with [CI/CD](https://github.com/szheng3/leaf_image_segmentation/actions/runs/4781787422/jobs/8500549277), you can pull the image from [here](https://hub.docker.com/repository/docker/szheng3/sz-leaf-ml/general)
+```
+docker pull szheng3/sz-rust-ml:latest
+```
+* Run the docker image.
+```
+docker run -d -p 8000:8000 szheng3/sz-rust-ml:latest
+```
+* Run the docker image with GPU.
+```
+docker run -d -p 8000:8000 szheng3/sz-rust-ml:latest-gpu
+```
+
+
+## CI/CD
+
+Github Actions configured in .github/workflows
+
 
 ## Requirements
 
@@ -85,7 +134,7 @@ using metrics such as IoU, Dice, F1-score, and accuracy. Finally, the most effec
 evaluation results.
 
 ### Training and Evaluation
-
+- train the model with Duke DCC on-demand GPU.
 - Use BCEWithLogitsLoss loss function and Adam optimizer.
 - Train dataset : Validation dataset = 2500:440
 - Number of Epochs = 20
