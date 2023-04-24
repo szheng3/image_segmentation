@@ -18,15 +18,15 @@ from script.Trainer import Trainer
 warnings.filterwarnings("ignore")
 
 
-def main():
+def train_save_evaluation():
     data_transform = transforms.Compose([
         transforms.Resize((256, 256)),
         transforms.ToTensor(),
     ])
 
-    train_dataset = SegmentationDataset("leaf_disease_images/train", "leaf_disease_masks/train",
+    train_dataset = SegmentationDataset("./data/train_images", "./data/train_masks",
                                         transform=data_transform)
-    val_dataset = SegmentationDataset("leaf_disease_images/val", "leaf_disease_masks/val", transform=data_transform)
+    val_dataset = SegmentationDataset("./data/valid_images", "./data/valid_masks", transform=data_transform)
 
     train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, num_workers=4)
     val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, num_workers=4)
@@ -35,11 +35,11 @@ def main():
 
     trainer = Trainer(train_loader, val_loader, device)
 
-    encoder_names = ["resnet34", "resnet50", "vgg16"]
+    encoder_names = ["efficientnet-b7", "efficientnet-b0", "resnet34", "resnet101", "vgg16", "vgg19"]
 
     model_nets = ["DeepLabV3", "UNET", "UNETplus"]
 
-    num_epochs = 10
+    num_epochs = 1
 
     trained_models = trainer.train_models(encoder_names, model_nets, num_epochs)
 
@@ -54,4 +54,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    train_save_evaluation()
