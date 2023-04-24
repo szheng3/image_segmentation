@@ -15,19 +15,6 @@ import streamlit as st
 from camera_input_live import camera_input_live
 
 
-# def send_email(subject, body, to):
-#     msg = EmailMessage()
-#     msg.set_content(body)
-#     msg["Subject"] = subject
-#     msg["From"] = "your-email@example.com"
-#     msg["To"] = to
-#
-#     server = smtplib.SMTP_SSL("smtp.example.com", 465)
-#     server.login("your-email@example.com", "your-email-password")
-#     server.send_message(msg)
-#     server.quit()
-
-
 # Function to send email using API
 def send_email_api(name, to_email, subject, body):
     url = "https://apiv1.sszzz.me/api/email/send"
@@ -46,9 +33,11 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the pre-trained models
 def load_trained_models(model_name):
+    # Set the device (either CPU or GPU) for training
     print(device)
     model_architecture, encoder_name = model_name.split('_')
 
+    # Choose the appropriate model architecture based on the input
     if model_architecture == "UNET":
         model = smp.Unet(encoder_name=encoder_name, encoder_weights=None, in_channels=3, classes=1)
     elif model_architecture == "DeepLabV3":
@@ -58,6 +47,7 @@ def load_trained_models(model_name):
     else:
         raise ValueError("Invalid model architecture")
 
+    # Load the pre-trained model weights
     model.load_state_dict(torch.load(f"./trained_models/{model_name}.pth", map_location=device))
     model = model.to(device)
     return model
@@ -65,8 +55,9 @@ def load_trained_models(model_name):
 
 def display_sent_email(uploaded_file):
     if uploaded_file is not None:
+        # Open the uploaded image and convert it to RGB format
         image = Image.open(uploaded_file).convert("RGB")
-
+        # Display the uploaded image and segmented image side by side
         cols = st.columns(2)
         resized_image = image.resize((256, 256))
         cols[0].image(resized_image, caption="Uploaded Image", use_column_width=True)
@@ -76,7 +67,7 @@ def display_sent_email(uploaded_file):
         # Check if the segmented area is greater than the threshold percentage
         area_percentage = (np.count_nonzero(output_image) / (
                 output_image.shape[0] * output_image.shape[1] * output_image.shape[2])) * 100
-
+        # If the area percentage is greater than the threshold, send an email alert
         if area_percentage > threshold_percentage:
             st.write(f"The predicted area percentage is {area_percentage:.2f}% which is greater than the threshold.")
             print(email)
@@ -103,6 +94,7 @@ class VideoTransformer:
         ])
 
     def transform(self, image):
+        # Transform the input image and send it to the device
         input_image = self.data_transform(image).unsqueeze(0).to(device)
 
         # Perform segmentation
@@ -123,6 +115,7 @@ st.set_page_config(page_title="Leaf Image Segmentation", layout="wide")
 st.title("Leaf Image Segmentation")
 st.write("Upload an image or use the camera to capture a photo and select a pre-trained model for segmentation.")
 
+# Sidebar for settings and configurations
 sidebar = st.sidebar
 sidebar.title("Settings")
 sidebar.write("Select a pre-trained model:")
@@ -131,21 +124,24 @@ model_nets = ["UNETplus", "DeepLabV3", "UNET"]
 # Remove DeepLabV3_vgg16 and DeepLabV3_vgg19 from the available options
 allowed_combinations = [f"{net}_{encoder}" for net in model_nets for encoder in model_names
                         if not (net == "DeepLabV3" and encoder in ["vgg16", "vgg19"])]
-
+# Select the pre-trained model
 model_name = sidebar.selectbox("", allowed_combinations)
 model = load_trained_models(model_name)
-
+# Set the threshold percentage for email alerts
 threshold_percentage = sidebar.slider("Alert Threshold Percentage", min_value=0, max_value=100, value=50, step=1)
 sidebar.write("Email Subscription:")
+# Email subscription input
 email = sidebar.text_input("Enter your email", "")
-
+# Navigation between Upload Image and Use Camera options
 nav = sidebar.radio("Navigation", ["Upload Image", "Use Camera"])
 
 if nav == "Upload Image":
+    # Upload image file
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         display_sent_email(uploaded_file)
 else:
+    # Use the camera to capture a photo
     st.write("Use the camera:")
     image = camera_input_live()
     display_sent_email(image)
