@@ -16,7 +16,7 @@ the aim of identifying the best model for achieving accurate leaf image segmenta
 This project includes a dataset consisting of 2500 leaf images and their corresponding masks for training purposes.
 Additionally, there are 440 leaf images and masks provided for validation purposes, which will allow for testing the
 performance of the developed models.
-The data could be downloaded from the following link: https://szdataset.s3.us-east-2.amazonaws.com/leaf_data.zip
+The data could be downloaded from the following link:
 https://www.kaggle.com/datasets/sovitrath/leaf-disease-segmentation-with-trainvalid-split
 
 ## Pretrained Model
