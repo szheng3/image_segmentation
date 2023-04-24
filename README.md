@@ -94,23 +94,25 @@ evaluation results.
 ## Results
 
 ![image](https://user-images.githubusercontent.com/16725501/233882989-08bdf9d0-27db-4d0e-adda-a66fd430a3ac.png)
-This document provides a recommendation on the performance of a model based on its MAP@k (Mean Average Precision at k)
-scores. The MAP@k scores were computed for k = 1, 3, 5, and 10, and the results are presented below:
+The best model used for leaf segmentation is UNETplus with the EfficientNet-B7 encoder. The evaluation metrics for the best model
+are as follows:
 
-* MAP@1: 0.1321
-* MAP@3: 0.0865
-* MAP@5: 0.0682
-* MAP@10: 0.0485
-
-The MAP@k is a popular evaluation metric for ranking models, and it measures the average precision at each cutoff k. In
-this case, the model's performance decreases as the cutoff k increases, indicating that it is better at identifying the
-top-ranked items than the lower-ranked ones.
-
-The MAP@1 score of 0.1321 suggests that the model performs reasonably well in identifying the top-ranked item, but there
-is still room for improvement. The MAP@3 score of 0.0865 indicates that the model's performance drops significantly
-beyond the first item, suggesting that it may not be as effective in identifying the top three items. The MAP@5 score of
-0.0682 and the MAP@10 score of 0.0485 indicate that the model's performance further decreases as more items are
-considered.
+Accuracy: This metric represents the percentage of correctly predicted pixels in the segmentation mask, and in this
+case, the model achieved an accuracy of 0.973.
+Precision: Precision measures the percentage of true positive pixels out of all the positive predictions made by the
+model. A high precision score indicates that the model makes fewer false positive predictions, and in this case, the
+precision score is 0.929.
+Recall: Recall is the percentage of true positive pixels that were correctly predicted out of all the ground truth
+positive pixels. A high recall score indicates that the model has a lower tendency to miss positive pixels, and in this
+case, the recall score is 0.896.
+F1-score: The F1-score is the harmonic mean of precision and recall, and it is a good indicator of the overall
+performance of the model. In this case, the F1-score is 0.912.
+IoU (Intersection over Union): IoU is the ratio of the intersection between the predicted and ground truth masks to
+their union. A high IoU score indicates that the model accurately predicts the object boundaries, and in this case, the
+IoU score is 0.839.
+Dice coefficient: The Dice coefficient is similar to IoU and measures the overlap between the predicted and ground truth
+masks. In this case, the Dice coefficient is 0.912, which indicates that the model accurately predicts the object
+boundaries and produces a high-quality segmentation mask.
 
 ## Application
 
