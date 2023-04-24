@@ -1,7 +1,8 @@
 # Import necessary libraries and modules
-import torch
 import numpy as np
+import torch
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 
 class Evaluator:
     def __init__(self, trained_models, val_loader, threshold, device):

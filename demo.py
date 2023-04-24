@@ -1,17 +1,11 @@
-import os
-import time
 import cv2
+import numpy as np
+import requests
+import segmentation_models_pytorch as smp
 import streamlit as st
 import torch
-from PIL import Image
-import numpy as np
 import torchvision.transforms as transforms
-import segmentation_models_pytorch as smp
-import av
-import requests
-import smtplib
-from email.message import EmailMessage
-import streamlit as st
+from PIL import Image
 from camera_input_live import camera_input_live
 
 

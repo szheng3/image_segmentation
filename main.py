@@ -1,15 +1,9 @@
-import os
 import torch
-import torch.nn as nn
-import torch.optim as optim
-import torchvision.transforms as transforms
-from torch.utils.data import Dataset, DataLoader
-from PIL import Image
-import numpy as np
-import matplotlib.pyplot as plt
-import segmentation_models_pytorch as smp
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import warnings
+
+import torch
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
 
 from script.Evaluator import Evaluator
 from script.SegmentationDataset import SegmentationDataset
