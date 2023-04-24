@@ -147,7 +147,7 @@ evaluation results.
 ### Training and Evaluation
 
 - train the model with Duke DCC on-demand GPU.
-- ![image](https://user-images.githubusercontent.com/16725501/233892384-fa0ca1da-352f-4bef-a697-97888f2fd790.png)
+![image](https://user-images.githubusercontent.com/16725501/233892384-fa0ca1da-352f-4bef-a697-97888f2fd790.png)
 - Use BCEWithLogitsLoss loss function and Adam optimizer.
 - Train dataset : Validation dataset = 2500:440
 - Number of Epochs = 20
