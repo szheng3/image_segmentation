@@ -127,7 +127,12 @@ open streamlit run demo.py
 
 ## Architecture Diagram
 
+### UNETplus vs UNET
 ![model architecture diagram](https://user-images.githubusercontent.com/16725501/233882811-1ed2155a-2d4a-4996-8a41-6fe1f1e0e9c2.png)
+
+### DeepLabV3
+
+![model architecture diagram](https://user-images.githubusercontent.com/16725501/233891246-12f80dcf-8b2b-4a68-9647-6d2cd450e3ad.png)
 
 ## Segmentation Model
 
