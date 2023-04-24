@@ -9,7 +9,7 @@ areas using a camera. By automatically alerting the farmer or bio scientist via 
 significantly improve the efficiency of plant monitoring. The project involves the comparison of various models, with
 the aim of identifying the best model for achieving accurate leaf image segmentation.
 
-![image](https://user-images.githubusercontent.com/44442059/230596869-fdf451c8-6d9d-4ad3-aa82-b55a42e9a6f1.png)
+![image](https://user-images.githubusercontent.com/16725501/233883932-4715b03d-fde3-451e-b4ad-6327f930db02.png)
 
 ## Data Source
 
@@ -72,7 +72,7 @@ open streamlit run demo.py
 
 ## Architecture Diagram
 
-![model architecture diagram](https://user-images.githubusercontent.com/50161537/231304318-7c07c38b-74b0-4ffb-8131-d6dd7bacdc49.png)
+![model architecture diagram](https://user-images.githubusercontent.com/16725501/233882811-1ed2155a-2d4a-4996-8a41-6fe1f1e0e9c2.png)
 
 ## Segmentation Model
 
@@ -93,7 +93,7 @@ evaluation results.
 
 ## Results
 
-![image](https://user-images.githubusercontent.com/50161537/231260130-1bb17a5c-e53c-4e48-901c-7a15dd9de562.jpeg)
+![image](https://user-images.githubusercontent.com/16725501/233882989-08bdf9d0-27db-4d0e-adda-a66fd430a3ac.png)
 This document provides a recommendation on the performance of a model based on its MAP@k (Mean Average Precision at k)
 scores. The MAP@k scores were computed for k = 1, 3, 5, and 10, and the results are presented below:
 
