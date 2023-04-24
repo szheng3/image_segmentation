@@ -87,7 +87,7 @@ evaluation results.
 ### Training and Evaluation
 
 - Use BCEWithLogitsLoss loss function and Adam optimizer.
-- Train dataset : Validation dataset = 8:2
+- Train dataset : Validation dataset = 2500:440
 - Number of Epochs = 20
 - Model with best performance saved for final image segmentation
 
