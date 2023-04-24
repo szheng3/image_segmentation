@@ -1,6 +1,4 @@
-
 [![publish to Dockerhub](https://github.com/szheng3/leaf_image_segmentation/actions/workflows/publish.yml/badge.svg)](https://github.com/szheng3/leaf_image_segmentation/actions/workflows/publish.yml)
-
 
 # Leaf Image Segmentation
 
@@ -14,6 +12,7 @@ significantly improve the efficiency of plant monitoring. The project involves t
 the aim of identifying the best model for achieving accurate leaf image segmentation.
 
 ## Project Demo with GPU enable
+
 * [https://api.cloud.sszzz.me/](https://api.cloud.sszzz.me/)
 
 ![image](https://user-images.githubusercontent.com/16725501/233883932-4715b03d-fde3-451e-b4ad-6327f930db02.png)
@@ -64,42 +63,52 @@ link: https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip
 |-- main.py                   ----main function
 `-- requirements.txt
 ```
+
 ## Kubernetes Deployment
+
 * go to the directory `K8s`
+
 ```
 cd K8s
 ```
 
 * create the namespace `resume-prod`
+
 ```
 kubectl create namespace resume-prod
 
 ```
+
 * apply the yaml files
+
 ```
 kubectl apply -f .
 ```
 
-* Google Kubernetes Engine (GKE) in GPU mode is used in this project for deployment. The following is the screenshot of the deployment.
+* Google Kubernetes Engine (GKE) in GPU mode is used in this project for deployment. The following is the screenshot of
+  the deployment.
 
 ![image](https://user-images.githubusercontent.com/16725501/233886025-38abb94c-cbc5-4696-be34-396955bb14b0.png)
 
 ## Docker
 
-* This repo main branch is automatically published to Dockerhub with [CI/CD](https://github.com/szheng3/leaf_image_segmentation/actions/runs/4781787422/jobs/8500549277), you can pull the image from [here](https://hub.docker.com/repository/docker/szheng3/sz-leaf-ml/general)
+* This repo main branch is automatically published to Dockerhub
+  with [CI/CD](https://github.com/szheng3/leaf_image_segmentation/actions/runs/4781787422/jobs/8500549277), you can pull
+  the image from [here](https://hub.docker.com/repository/docker/szheng3/sz-leaf-ml/general)
+
 ```
 docker pull szheng3/sz-leaf-ml:latest
 ```
+
 * Run the docker image with GPU.
+
 ```
 docker run -d -p 8501:8501 szheng3/sz-leaf-ml:latest
 ```
 
-
 ## CI/CD
 
 Github Actions configured in .github/workflows
-
 
 ## Requirements
 
@@ -131,6 +140,7 @@ using metrics such as IoU, Dice, F1-score, and accuracy. Finally, the most effec
 evaluation results.
 
 ### Training and Evaluation
+
 - train the model with Duke DCC on-demand GPU.
 - Use BCEWithLogitsLoss loss function and Adam optimizer.
 - Train dataset : Validation dataset = 2500:440
@@ -140,7 +150,8 @@ evaluation results.
 ## Results
 
 ![image](https://user-images.githubusercontent.com/16725501/233882989-08bdf9d0-27db-4d0e-adda-a66fd430a3ac.png)
-The best model used for leaf segmentation is UNETplus with the EfficientNet-B7 encoder. The evaluation metrics for the best model
+The best model used for leaf segmentation is UNETplus with the EfficientNet-B7 encoder. The evaluation metrics for the
+best model
 are as follows:
 
 Accuracy: This metric represents the percentage of correctly predicted pixels in the segmentation mask, and in this
@@ -164,6 +175,14 @@ IoU score is 0.839.
 Dice coefficient: The Dice coefficient is similar to IoU and measures the overlap between the predicted and ground truth
 masks. In this case, the Dice coefficient is 0.912, which indicates that the model accurately predicts the object
 boundaries and produces a high-quality segmentation mask.
+
+## Non-Deep Learning Model
+
+Although non-deep learning models such as random forests can achieve decent performance, their scalability can be
+limited when dealing with large image datasets. In this case, training on eight images and validating on two, the model
+achieved a high training accuracy of 0.9817 and a validation accuracy of 0.9496, which is a good result. However, as the
+image size grows larger, the model's performance may suffer due to its reliance on CPU instead of GPU, causing the Duke
+DCC on-demand platform to freeze under heavy CPU usage.
 
 ## Application
 
