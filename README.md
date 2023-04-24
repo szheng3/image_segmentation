@@ -33,7 +33,7 @@ link: https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip
 ## Project Structure
 
 ```
-|-- .devcontainer               ----codespace configuration 
+|-- .devcontainer               ----codespaces configuration 
 |-- .github                     ----github CI/CD actions      
 |-- K8s                         ----kubernetes deployment files
 |   |-- ingress.yaml
