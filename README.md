@@ -127,12 +127,7 @@ open streamlit run demo.py
 
 ## Architecture Diagram
 
-### UNETplus vs UNET
-![model architecture diagram](https://user-images.githubusercontent.com/16725501/233882811-1ed2155a-2d4a-4996-8a41-6fe1f1e0e9c2.png)
-
-### DeepLabV3
-
-![model architecture diagram](https://user-images.githubusercontent.com/16725501/233891246-12f80dcf-8b2b-4a68-9647-6d2cd450e3ad.png)
+![model architecture diagram](https://user-images.githubusercontent.com/16725501/234078333-32a71887-ae9b-4f1a-8752-51a6ee4caeae.png)
 
 ## Segmentation Model
 
@@ -143,6 +138,13 @@ Additionally, it utilized different encoders such as efficientnet-b7, efficientn
 vgg19. The model's performance was assessed
 using metrics such as IoU, Dice, F1-score, and accuracy. Finally, the most effective model was selected based on the
 evaluation results.
+
+### UNETplus vs UNET
+![model architecture diagram](https://user-images.githubusercontent.com/16725501/233882811-1ed2155a-2d4a-4996-8a41-6fe1f1e0e9c2.png)
+
+### DeepLabV3
+
+![model architecture diagram](https://user-images.githubusercontent.com/16725501/233891246-12f80dcf-8b2b-4a68-9647-6d2cd450e3ad.png)
 
 ### Training and Evaluation
 
