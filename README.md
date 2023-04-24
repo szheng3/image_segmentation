@@ -49,14 +49,15 @@ link: https://szdataset.s3.us-east-2.amazonaws.com/trained_models.zip
 |   `-- valid_masks
 |       `-- 00000_3.png
 |-- notebooks
-|   |-- ml-5.ipynb
 |   |-- ml.ipynb
 |   `-- nondeep.ipynb
 |-- script
-|   |-- Evaluator.py
-|   |-- SegmentationDataset.py
-|   `-- Trainer.py
-|-- trained_models            ----best model will be saved here
+|   |-- Evaluator.py            ----evaluation class
+|   |-- SegmentationDataset.py  ----dataset class
+|   |-- NonDeepLearning.py      ----Non Deep Learning models (RandomForest) in order to compared with deep learning model
+|   `-- Trainer.py              ----trainer class
+|-- trained_models              ----training model will be saved here
+|   `-- UNETplus_efficientnet-b0.pth
 |-- Dockerfile
 |-- README.md
 |-- demo.py                   ----web demo script
