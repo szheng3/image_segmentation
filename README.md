@@ -99,17 +99,22 @@ are as follows:
 
 Accuracy: This metric represents the percentage of correctly predicted pixels in the segmentation mask, and in this
 case, the model achieved an accuracy of 0.973.
+
 Precision: Precision measures the percentage of true positive pixels out of all the positive predictions made by the
 model. A high precision score indicates that the model makes fewer false positive predictions, and in this case, the
 precision score is 0.929.
+
 Recall: Recall is the percentage of true positive pixels that were correctly predicted out of all the ground truth
 positive pixels. A high recall score indicates that the model has a lower tendency to miss positive pixels, and in this
 case, the recall score is 0.896.
+
 F1-score: The F1-score is the harmonic mean of precision and recall, and it is a good indicator of the overall
 performance of the model. In this case, the F1-score is 0.912.
+
 IoU (Intersection over Union): IoU is the ratio of the intersection between the predicted and ground truth masks to
 their union. A high IoU score indicates that the model accurately predicts the object boundaries, and in this case, the
 IoU score is 0.839.
+
 Dice coefficient: The Dice coefficient is similar to IoU and measures the overlap between the predicted and ground truth
 masks. In this case, the Dice coefficient is 0.912, which indicates that the model accurately predicts the object
 boundaries and produces a high-quality segmentation mask.
