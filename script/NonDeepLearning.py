@@ -1,8 +1,9 @@
+import os
+
+import numpy as np
+from skimage import io
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from skimage import io
-import os
-import numpy as np
 
 
 class ImageClassifier:
