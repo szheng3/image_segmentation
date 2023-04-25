@@ -188,7 +188,7 @@ boundaries and produces a high-quality segmentation mask.
 
 Although non-deep learning models such as random forests can achieve decent performance, their scalability can be
 limited when dealing with large image datasets. In this case, training on eight images and validating on two, the model
-achieved a high training accuracy of 0.9817 and a validation accuracy of 0.9496, which is a good result. However, as the
+achieved a high training IoU of 0.9116 and a validation IoU of 0.7790, which is a good result. However, as the
 image size grows larger, the model's performance may suffer due to its reliance on CPU instead of GPU, causing the Duke
 DCC on-demand platform to freeze under heavy CPU usage.
 
